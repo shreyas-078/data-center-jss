@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700;900&display=swap");
+
+* {
+  font-family: "Fira Sans", sans-serif;
+}
+
+:root {
+  --light-white: rgb(246, 244, 235);
+  --light-blue: rgb(70, 130, 169);
+}
+
+button,
+select {
+  cursor: pointer;
+  border: 2px solid var(--light-blue);
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  background: transparent;
+  color: var(--light-blue);
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover,
+select:focus {
+  color: var(--light-white);
+  background-color: var(--light-blue);
+  outline: none;
+}
+
+ul {
+  padding: 0;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+#clg-title {
+  color: var(--light-white);
+}
+
+#logo-img {
+  height: 64px;
+  width: 64px;
+}
+
+#top-header {
+  background-color: var(--light-blue);
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 6rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+#preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+
+
+embed {
+  border: 3px solid var(--light-blue);
+  height: 24.3rem;
+  width: 19rem;
+}
+
+.invisible {
+  display: none;
+}
