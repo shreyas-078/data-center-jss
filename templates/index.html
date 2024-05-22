@@ -28,22 +28,24 @@
     <option value="CSE">CSE</option>
     <option value="ISE">ISE</option>
     <option value="AI/ML">AI/ML</option>
-    <option value="robotics">Robotics and Automation</option>
-    <option value="civil">Civil</option>
-    <option value="civil">Mechanical</option>
+    <option value="Robotics">Robotics and Automation</option>
+    <option value="Civil">Civil</option>
+    <option value="Mechanical">Mechanical</option>
+    <option value="ECE">ECE</option>
+    <option value="EEE">EEE</option>
+    <option value="IEM">IEM</option>
   </select>
   <p>Available fields of the Master File:</p>
+  <input type="search" placeholder="Search..." id="search-bar">
   <ul id="fields-list">
-    <div>
-      <label for="some-option">Field 1</label>
-      <input type="checkbox" name="f1" id="field-1">
-    </div>
-    <div>
-      <label for="some-option">Field 2</label>
-      <input type="checkbox" name="f2" id="field-2">
-    </div>
+    <p id="select-text">--SELECT YOUR BRANCH AND PERSON TYPE--</p>
   </ul>
-  <button type="button">Fetch Selected Field Data & Preview</button>
+  <div id="select-all" class="invisible">
+    <input type="checkbox" id="select-all-check">
+    <label for="select-all-label">Select All</label>
+  </div>
+  <br>
+  <button type="button" id="preview-btn">Fetch Selected Field Data & Preview</button>
   <embed src="https://pdfobject.com/pdf/sample.pdf" class="invisible">
   <div id="download-section" class="invisible">
     <p>Select File Type for Download:</p>

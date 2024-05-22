@@ -10,7 +10,8 @@
 }
 
 button,
-select {
+select,
+#search-bar {
   cursor: pointer;
   border: 2px solid var(--light-blue);
   border-radius: 0.5rem;
@@ -71,12 +72,37 @@ body {
   gap: 1rem;
 }
 
-
+#fields-list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  align-content: center;
+  width: 90vw;
+}
 
 embed {
   border: 3px solid var(--light-blue);
   height: 24.3rem;
   width: 19rem;
+}
+
+#select-text {
+  text-align: center;
+  width: 100.8rem;
+}
+
+#search-bar {
+  cursor: text;
+  color: var(--light-blue);
+}
+
+#search-bar:focus {
+  outline: none;
+}
+
+#search-bar::placeholder {
+  color: var(--light-blue);
 }
 
 .invisible {
