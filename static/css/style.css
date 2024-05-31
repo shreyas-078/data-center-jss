@@ -77,7 +77,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
-  align-content: center;
+  place-content: center;
   width: 90vw;
 }
 

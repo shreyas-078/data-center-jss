@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
 import pandas as pd
 import json
 import webbrowser
@@ -13,8 +13,8 @@ app = Flask(
 
 def read_data():
     global fields_list_civil_emp, civil_emp_df
-    civil_emp_df = pd.read_csv("master-data/Civil-Emp.csv", header=3)
-    fields_list_civil_emp = civil_emp_df.iloc[0].tolist()
+    civil_emp_df = pd.read_csv("master-data/Civil-Emp.csv", header=4)
+    fields_list_civil_emp = civil_emp_df.columns.tolist()
 
 
 @app.route("/Civil-employee-data", methods=["GET"])
@@ -31,13 +31,13 @@ def homepage():
 @app.route("/return-selected-fields", methods=["POST"])
 def return_selected_fields():
     data = json.loads(request.data.decode("utf-8"))
-    print(data)
-    try:
-        extracted_df = civil_emp_df[data]
-    except KeyError as e:
-        raise ValueError(f"Error extracting columns: {e}")
-    print(extracted_df)
-    return jsonify({"message": "hi!"})
+    extracted_df = civil_emp_df[data]
+    extracted_df.to_csv("./output-csv/output.csv", index=False)
+    return send_file(
+        path_or_file="./output-csv/output.csv",
+        download_name="output.csv",
+        as_attachment=True,
+    )
 
 
 if __name__ == "__main__":

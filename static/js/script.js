@@ -111,12 +111,17 @@ previewButton.addEventListener("click", () => {
     },
     body: JSON.stringify(selectedFields),
   })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-    })
     .then((data) => {
-      console.log(data);
+      console;
+      return data.blob();
+    })
+    .then((blob) => {
+      const objectURL = URL.createObjectURL(blob);
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.style.display = "none";
+      downloadAnchor.download = "output.csv";
+      downloadAnchor.href = objectURL;
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
     });
 });
