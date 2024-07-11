@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request, send_file
+import os
 import pandas as pd
 import json
 import webbrowser
@@ -105,5 +106,8 @@ def return_selected_fields():
 
 if __name__ == "__main__":
     read_data()
+    for root, dirs, files in os.walk("./output-csv"):
+        for file in files:
+            os.remove(file)
     webbrowser.open_new_tab("http://127.0.0.1:8000")
     app.run(port=8000)
