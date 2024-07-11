@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Fetch</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="shortcut icon" href="../static/images/jss-logo.png" type="image/x-icon">
   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 
@@ -35,10 +36,19 @@
     <option value="EEE">EEE</option>
     <option value="IEM">IEM</option>
   </select>
+  <div class="invisible" id="year-selector-div">
+    <p>Select Year:</p>
+    <select name="year" id="year">
+      <option value="year1">1st Year</option>
+      <option value="year2">2nd Year</option>
+      <option value="year3">3rd Year</option>
+      <option value="year4">4th Year</option>
+    </select>
+  </div>
   <p>Available fields of the Master File:</p>
   <input type="search" placeholder="Search..." id="search-bar">
-  <ul id="fields-list">
-    <p id="select-text">--SELECT YOUR BRANCH AND PERSON TYPE--</p>
+  <p id="select-text">--SELECT YOUR BRANCH AND PERSON TYPE--</p>
+  <ul id="fields-list" class="invisible">
   </ul>
   <div id="select-all" class="invisible">
     <input type="checkbox" id="select-all-check">

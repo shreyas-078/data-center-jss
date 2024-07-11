@@ -1,13 +1,17 @@
 const personTypeSelector = document.getElementById("stud-emp");
 const branchSelector = document.getElementById("branch");
+const yearSelectorDiv = document.getElementById("year-selector-div");
+const yearSelector = document.getElementById("year");
 const fieldsList = document.getElementById("fields-list");
 const searchBox = document.getElementById("search-bar");
 const selectAllDiv = document.getElementById("select-all");
 const previewButton = document.getElementById("preview-btn");
 const selectAllButton = selectAllDiv.querySelector("input");
+const selectPersonBranchText = document.getElementById("select-text");
 
 let selectedPersonType = "";
 let selectedBranch = "";
+let selectedYear = "";
 
 branchSelector.addEventListener("change", (event) => {
   selectedBranch = event.target.value;
@@ -18,14 +22,25 @@ branchSelector.addEventListener("change", (event) => {
     selectedBranch === ""
   ) {
     selectAllDiv.classList.add("invisible");
-    fieldsList.innerHTML = `<p id="select-text">--SELECT YOUR BRANCH AND PERSON TYPE--</p>`;
+    selectPersonBranchText.classList.remove("invisible");
+    fieldsList.innerHTML = "";
+    fieldsList.classList.add("invisible");
     return;
   }
-  displayFields(selectedPersonType, selectedBranch);
+  fieldsList.innerHTML = "";
+
+  displayFields(selectedPersonType, selectedBranch, selectedYear);
 });
 
 personTypeSelector.addEventListener("change", (event) => {
   selectedPersonType = event.target.value;
+  if (selectedPersonType === "student") {
+    yearSelectorDiv.classList.remove("invisible");
+    selectedYear = "year1";
+  } else {
+    yearSelectorDiv.classList.add("invisible");
+    selectedYear = "";
+  }
   if (
     selectedBranch === "none" ||
     selectedPersonType === "none" ||
@@ -33,44 +48,74 @@ personTypeSelector.addEventListener("change", (event) => {
     selectedBranch === ""
   ) {
     selectAllDiv.classList.add("invisible");
-    fieldsList.innerHTML = `<p id="select-text">--SELECT YOUR BRANCH AND PERSON TYPE--</p>`;
+    selectPersonBranchText.classList.remove("invisible");
+    fieldsList.innerHTML = "";
+    fieldsList.classList.add("invisible");
     return;
   }
+  fieldsList.innerHTML = "";
 
-  displayFields(selectedPersonType, selectedBranch);
+  displayFields(selectedPersonType, selectedBranch, selectedYear);
 });
 
-async function fetchFields(selectedPersonType, selectedBranch) {
-  return fetch(`/${selectedBranch}-${selectedPersonType}-data`, {
-    method: "GET",
-  })
-    .then((response) => {
-      return response.json();
+async function fetchFields(selectedPersonType, selectedBranch, selectedYear) {
+  if (!selectedYear && selectedPersonType === "student") {
+    return;
+  }
+  if (!selectedYear) {
+    return fetch(`/${selectedBranch}-${selectedPersonType}-data`, {
+      method: "GET",
     })
-    .then((data) => {
-      const fields = data["civil-fields"];
-      return fields;
-    });
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const fields = data[`${selectedBranch}-fields`];
+        return fields;
+      });
+  } else {
+    return fetch(
+      `/${selectedBranch}-${selectedYear}-${selectedPersonType}-data`,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const fields = data[`${selectedBranch}-${selectedYear}-fields`];
+        return fields;
+      });
+  }
 }
 
-function displayFields(selectedPersonType, selectedBranch) {
-  fetchFields(selectedPersonType, selectedBranch).then((fields) => {
-    fieldsList.innerHTML = "";
-    fields.forEach((field) => {
-      const newField = document.createElement("li");
-      newField.id = field;
-      newField.className = "field";
-      const checkBoxField = document.createElement("input");
-      checkBoxField.type = "checkbox";
-      const checkBoxLabel = document.createElement("label");
-      checkBoxLabel.textContent = field;
-      newField.appendChild(checkBoxField);
-      newField.appendChild(checkBoxLabel);
-      fieldsList.append(newField);
-    });
-  });
+function displayFields(selectedPersonType, selectedBranch, selectedYear) {
+  fetchFields(selectedPersonType, selectedBranch, selectedYear).then(
+    (fields) => {
+      selectPersonBranchText.classList.add("invisible");
+      fields.forEach((field) => {
+        const newField = document.createElement("li");
+        newField.id = field;
+        newField.className = "field";
+        const checkBoxField = document.createElement("input");
+        checkBoxField.type = "checkbox";
+        const checkBoxLabel = document.createElement("label");
+        checkBoxLabel.textContent = field;
+        newField.appendChild(checkBoxField);
+        newField.appendChild(checkBoxLabel);
+        fieldsList.append(newField);
+      });
+    }
+  );
   selectAllDiv.classList.remove("invisible");
 }
+
+yearSelector.addEventListener("change", (event) => {
+  selectedYear = event.target.value;
+  fieldsList.innerHTML = "";
+  displayFields(selectedPersonType, selectedBranch, selectedYear);
+});
 
 searchBox.addEventListener("input", (event) => {
   if (fieldsList.innerHTML === "") return;
@@ -109,10 +154,14 @@ previewButton.addEventListener("click", () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(selectedFields),
+    body: JSON.stringify({
+      selectedFields,
+      selectedBranch,
+      selectedPersonType,
+      selectedYear,
+    }),
   })
     .then((data) => {
-      console;
       return data.blob();
     })
     .then((blob) => {
